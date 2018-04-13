@@ -24,7 +24,7 @@ RUN apt-get autoremove -y
 RUN rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Stage working dir for CMD
-WORKDIR /src
+WORKDIR /work
 
 # TODO: replace with Cr build script
 CMD ["/bin/bash"]
