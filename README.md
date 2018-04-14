@@ -1,10 +1,18 @@
-## What next
+## Build Image
+```shell
+docker build .
+```
+
+## Fetch & Build Chrome
 
 ```shell
-$ export IMAGE_NAME=$USER/docker-chromium-builder
-$ export CHROMIUM_SRC=~/chromium # or on Windows you need the full path c:\Users\<.....>\src
-$ docker create -v $CHROMIUM_SRC:/src --name chromium_src $IMAGE_NAME /bin/true
-$ docker run --rm -it --volumes-from=chromium_src $IMAGE_NAME
-docker@7c56f908616f:/src$ ninja -C out/Release
-docker@7c56f908616f:/src$ ./out/Release/base_unittests
+user@host> docker run -it --rm -v /path/to/cr:/work docker-chromium-build:latest
+root@docker> fetch android --nohooks [--no-history]
+root@docker> cd src
+root@docker> echo "target_os = [ 'android' ]" >> ../.gclient
+root@docker> gclient sync
+root@docker> gclient runhooks
+root@docker> gn gen --args='target_os="android"' out/Default
+root@docker> ninja -C out/Default chrome_public_apk chrome_modern_public_apk monochrome_public_apk
+root@docker> ./out/Release/base_unittests
 ```
